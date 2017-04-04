@@ -8,12 +8,33 @@ function isEmpty (tekst) {
 }
 
 function validate(formularz) {
-  checkStringAndFocus(formularz.elements["f_imie"],"Podaj imie!");
-  checkStringAndFocus(formularz.elements["f_nazwisko"],"Podaj nazwisko!");
-  checkZIPCodeRegEx(formularz.elements["f_kod"]);
-  checkStringAndFocus(formularz.elements["f_ulica"],"Podaj ulice!");
-  checkStringAndFocus(formularz.elements["f_miasto"],"Podaj miasto!");
-  checkEmailRegEx(formularz.elements["f_email"].value);
+  var validated = true;
+  if(!checkStringAndFocus(formularz.elements["f_imie"],"Podaj imie!")){
+    formularz.elements["f_imie"].className="wrong";
+    validated = false;
+  }
+  if(!checkStringAndFocus(formularz.elements["f_nazwisko"],"Podaj nazwisko!")){
+    formularz.elements["f_nazwisko"].className="wrong";
+    validated = false;
+  }
+  if(!checkStringAndFocus(formularz.elements["f_kod"],"Podaj kod!")) {
+    formularz.elements["f_kod"].className="wrong";
+    validated = false;
+  }
+  if(!checkStringAndFocus(formularz.elements["f_ulica"],"Podaj ulice!")){
+    formularz.elements["f_ulica"].className="wrong";
+    validated = false;
+  }
+  if(!checkStringAndFocus(formularz.elements["f_miasto"],"Podaj miasto!")){
+    formularz.elements["f_miasto"].className="wrong";
+    validated = false;
+  }
+  if(!checkEmailRegEx(formularz.elements["f_email"].value)){
+    formularz.elements["f_email"].className="wrong";
+    validated = false;
+  }
+  if(validated==false) return false;
+  return true;
 }
 
 function isWhiteSpace(str) {
@@ -71,8 +92,8 @@ function checkStringAndFocus(obj, msg) {
     if (isWhiteSpace(str) || isEmpty(str)) {
 
         document.getElementById(errorFieldName).innerHTML = msg;
-        obj.focus();
         startTimer(errorFieldName);
+        obj.focus();
 
         return false;
     } else {
@@ -81,7 +102,6 @@ function checkStringAndFocus(obj, msg) {
 }
 
 var errorField = "";
-
 function startTimer(fName) {
     errorField = fName;
     window.setTimeout("clearError(errorField)", 5000);
